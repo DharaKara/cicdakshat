@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops-integration
+  template:
+    metadata:
+      labels:
+        app: devops-integration
+    spec:
+      containers:
+      - name: devops-container
+        image: devops-integration:latest
+        ports:
+        - containerPort: 8085
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-service
+spec:
+  selector:
+    app: devops-integration
+  ports:
+  - protocol: TCP
+    port: 8085
+    targetPort: 8085
+  type: LoadBalancer
